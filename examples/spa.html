@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>lazyish – SPA / Dynamic Content</title>
+  <style>
+    body { margin: 0; font-family: sans-serif; padding: 20px; }
+    img {
+      width: 100%;
+      max-width: 400px;
+      height: 200px;
+      object-fit: cover;
+      background: #eee;
+      display: block;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      margin: 10px 0;
+    }
+    img.lazyloaded { opacity: 1; }
+    button { padding: 10px 20px; font-size: 1rem; cursor: pointer; margin: 10px 0; }
+    #container { margin-top: 20px; }
+  </style>
+</head>
+<body>
+  <h1>SPA Dynamic Content Demo</h1>
+  <p>Click the button to dynamically add lazy-loaded images. They should be auto-discovered by MutationObserver.</p>
+  <button id="addBtn">Add Images</button>
+  <div id="container"></div>
+
+  <script type="module">
+    import lazyish from '../dist/lazyish.esm.js';
+    const lazy = lazyish({ observeDOM: true });
+
+    let count = 0;
+    document.getElementById('addBtn').addEventListener('click', () => {
+      const container = document.getElementById('container');
+      for (let i = 0; i < 3; i++) {
+        count++;
+        const img = document.createElement('img');
+        img.className = 'lazyload';
+        img.setAttribute('data-src', `https://picsum.photos/400/200?random=${count}`);
+        img.alt = `Dynamic image ${count}`;
+        container.appendChild(img);
+      }
+    });
+  </script>
+</body>
+</html>

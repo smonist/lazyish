@@ -1,0 +1,59 @@
+{
+  "name": "lazyish",
+  "version": "1.0.0",
+  "description": "A lightweight, zero-dependency lazy loading micro-library using native browser APIs",
+  "main": "dist/lazyish.cjs.js",
+  "module": "dist/lazyish.esm.js",
+  "browser": "dist/lazyish.iife.js",
+  "types": "dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/lazyish.esm.js",
+      "require": "./dist/lazyish.cjs.js",
+      "browser": "./dist/lazyish.iife.js",
+      "types": "./dist/types/index.d.ts"
+    }
+  },
+  "sideEffects": false,
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "rollup -c",
+    "test": "vitest run",
+    "lint": "eslint src test --ext .ts",
+    "size": "npx size-limit"
+  },
+  "size-limit": [
+    {
+      "path": "dist/lazyish.esm.js",
+      "limit": "2 KB"
+    }
+  ],
+  "devDependencies": {
+    "@rollup/plugin-terser": "^0.4.4",
+    "@rollup/plugin-typescript": "^11.1.6",
+    "@typescript-eslint/eslint-plugin": "^7.0.0",
+    "@typescript-eslint/parser": "^7.0.0",
+    "eslint": "^8.57.0",
+    "jsdom": "^28.1.0",
+    "rollup": "^4.18.0",
+    "size-limit": "^11.1.4",
+    "tslib": "^2.6.3",
+    "typescript": "^5.4.5",
+    "vitest": "^1.6.0"
+  },
+  "keywords": [
+    "lazy",
+    "loading",
+    "images",
+    "intersection-observer",
+    "typescript"
+  ],
+  "author": "smonist",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/smonist/lazyish"
+  }
+}
