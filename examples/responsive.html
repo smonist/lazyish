@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>lazyish – Responsive Images</title>
+  <style>
+    body { margin: 0; font-family: sans-serif; }
+    .gallery { display: flex; flex-direction: column; gap: 20px; padding: 20px; }
+    img {
+      width: 100%;
+      max-width: 100%;
+      height: auto;
+      background: #eee;
+      display: block;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+    img.lazyloaded { opacity: 1; }
+    .spacer { height: 100vh; display: flex; align-items: center; justify-content: center; font-size: 2rem; }
+  </style>
+</head>
+<body>
+  <div class="spacer">↓ Scroll down to see responsive lazy loading ↓</div>
+  <div class="gallery">
+    <img class="lazyload"
+         data-src="https://picsum.photos/800/400?random=10"
+         data-srcset="https://picsum.photos/400/200?random=10 400w, https://picsum.photos/800/400?random=10 800w"
+         data-sizes="auto"
+         alt="Responsive image 1">
+    <img class="lazyload"
+         data-src="https://picsum.photos/800/400?random=11"
+         data-srcset="https://picsum.photos/400/200?random=11 400w, https://picsum.photos/800/400?random=11 800w"
+         data-sizes="auto"
+         alt="Responsive image 2">
+  </div>
+
+  <script type="module">
+    import lazyish from '../dist/lazyish.esm.js';
+    lazyish({ autoSizes: true });
+  </script>
+</body>
+</html>
