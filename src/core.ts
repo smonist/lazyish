@@ -4,10 +4,10 @@ import { loadBackground } from './bg.js';
 import { setupAutoSizes } from './resize.js';
 
 /**
- * Determine if an element is in OBSERVER MODE (has data-src or data-srcset).
+ * Determine if an element is in OBSERVER MODE (has data-src, data-srcset, or data-poster).
  */
 function isObserverMode(el: Element): boolean {
-  return el.hasAttribute('data-src') || el.hasAttribute('data-srcset');
+  return el.hasAttribute('data-src') || el.hasAttribute('data-srcset') || el.hasAttribute('data-poster');
 }
 
 /**
@@ -61,6 +61,30 @@ function unveil(el: Element, options: LazyishOptions): void {
   if (dataSizes && dataSizes !== 'auto') {
     el.removeAttribute('data-sizes');
     el.setAttribute('sizes', dataSizes);
+  }
+
+  // Handle video-specific attributes
+  if (el instanceof HTMLVideoElement) {
+    const dataPoster = el.getAttribute('data-poster');
+    if (dataPoster) {
+      el.removeAttribute('data-poster');
+      el.setAttribute('poster', dataPoster);
+    }
+
+    // Copy data-src to src on child <source> elements
+    const sources = el.querySelectorAll('source[data-src]');
+    for (const source of sources) {
+      const sourceSrc = source.getAttribute('data-src');
+      if (sourceSrc) {
+        source.removeAttribute('data-src');
+        source.setAttribute('src', sourceSrc);
+      }
+    }
+
+    // Trigger the video to load the new sources
+    if (sources.length > 0) {
+      el.load();
+    }
   }
 
   onLoad(el, () => {

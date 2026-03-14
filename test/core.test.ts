@@ -224,4 +224,86 @@ describe('createCore', () => {
     expect(mockObserve).toHaveBeenCalledWith(img1);
     expect(mockObserve).toHaveBeenCalledWith(img2);
   });
+
+  it('observes video elements with data-src', () => {
+    document.body.innerHTML = '<video class="lazyload" data-src="video.mp4"></video>';
+    const video = document.querySelector('video')!;
+    createCore(defaultOptions);
+    expect(mockObserve).toHaveBeenCalledWith(video);
+  });
+
+  it('copies data-src to src on video intersection', () => {
+    document.body.innerHTML = '<video class="lazyload" data-src="video.mp4"></video>';
+    const video = document.querySelector('video')!;
+    createCore(defaultOptions);
+    triggerIntersection(video);
+    expect(video.getAttribute('src')).toBe('video.mp4');
+  });
+
+  it('copies data-poster to poster on video intersection', () => {
+    document.body.innerHTML = '<video class="lazyload" data-src="video.mp4" data-poster="poster.jpg"></video>';
+    const video = document.querySelector('video')!;
+    createCore(defaultOptions);
+    triggerIntersection(video);
+    expect(video.getAttribute('poster')).toBe('poster.jpg');
+    expect(video.hasAttribute('data-poster')).toBe(false);
+  });
+
+  it('copies data-src to src on child source elements', () => {
+    document.body.innerHTML = `
+      <video class="lazyload" data-poster="poster.jpg">
+        <source data-src="video.mp4" type="video/mp4">
+        <source data-src="video.webm" type="video/webm">
+      </video>`;
+    const video = document.querySelector('video')!;
+    const sources = video.querySelectorAll('source');
+    createCore(defaultOptions);
+    triggerIntersection(video);
+    expect(sources[0].getAttribute('src')).toBe('video.mp4');
+    expect(sources[0].hasAttribute('data-src')).toBe(false);
+    expect(sources[1].getAttribute('src')).toBe('video.webm');
+    expect(sources[1].hasAttribute('data-src')).toBe(false);
+  });
+
+  it('calls video.load() when source children are present', () => {
+    document.body.innerHTML = `
+      <video class="lazyload" data-poster="poster.jpg">
+        <source data-src="video.mp4" type="video/mp4">
+      </video>`;
+    const video = document.querySelector('video')!;
+    const loadSpy = vi.spyOn(video, 'load');
+    createCore(defaultOptions);
+    triggerIntersection(video);
+    expect(loadSpy).toHaveBeenCalled();
+  });
+
+  it('adds classLoaded on video loadeddata event', () => {
+    document.body.innerHTML = '<video class="lazyload" data-src="video.mp4"></video>';
+    const video = document.querySelector('video')!;
+    createCore(defaultOptions);
+    triggerIntersection(video);
+    video.dispatchEvent(new Event('loadeddata'));
+    expect(video.classList.contains('lazyloaded')).toBe(true);
+    expect(video.classList.contains('lazyloading')).toBe(false);
+  });
+
+  it('adds classError on video error', () => {
+    document.body.innerHTML = '<video class="lazyload" data-src="bad.mp4"></video>';
+    const video = document.querySelector('video')!;
+    createCore(defaultOptions);
+    triggerIntersection(video);
+    video.dispatchEvent(new Event('error'));
+    expect(video.classList.contains('lazyerror')).toBe(true);
+    expect(video.classList.contains('lazyloading')).toBe(false);
+  });
+
+  it('observes video with only data-poster (no data-src)', () => {
+    document.body.innerHTML = `
+      <video class="lazyload" data-poster="poster.jpg">
+        <source data-src="video.mp4" type="video/mp4">
+      </video>`;
+    const video = document.querySelector('video')!;
+    createCore(defaultOptions);
+    expect(mockObserve).toHaveBeenCalledWith(video);
+  });
 });

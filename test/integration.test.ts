@@ -177,4 +177,48 @@ describe('lazyish integration', () => {
     expect(iframe.classList.contains('lazyloaded')).toBe(true);
     expect(iframe.classList.contains('lazyloading')).toBe(false);
   });
+
+  it('video lifecycle: init → intersect → loadeddata → class transition', () => {
+    document.body.innerHTML = '<video class="lazyload" data-src="video.mp4" data-poster="poster.jpg"></video>';
+    const video = document.querySelector('video')!;
+
+    lazyish();
+
+    // Element should be observed
+    expect(mockIOObserve).toHaveBeenCalledWith(video);
+
+    // Intersect
+    triggerIntersection(video);
+    expect(video.getAttribute('src')).toBe('video.mp4');
+    expect(video.getAttribute('poster')).toBe('poster.jpg');
+    expect(video.classList.contains('lazyloading')).toBe(true);
+
+    // Loadeddata
+    video.dispatchEvent(new Event('loadeddata'));
+    expect(video.classList.contains('lazyloaded')).toBe(true);
+    expect(video.classList.contains('lazyloading')).toBe(false);
+  });
+
+  it('video with source children lifecycle', () => {
+    document.body.innerHTML = `
+      <video class="lazyload" data-poster="poster.jpg">
+        <source data-src="video.mp4" type="video/mp4">
+        <source data-src="video.webm" type="video/webm">
+      </video>`;
+    const video = document.querySelector('video')!;
+    const sources = video.querySelectorAll('source');
+
+    lazyish();
+
+    expect(mockIOObserve).toHaveBeenCalledWith(video);
+
+    triggerIntersection(video);
+    expect(video.getAttribute('poster')).toBe('poster.jpg');
+    expect(sources[0].getAttribute('src')).toBe('video.mp4');
+    expect(sources[1].getAttribute('src')).toBe('video.webm');
+    expect(video.classList.contains('lazyloading')).toBe(true);
+
+    video.dispatchEvent(new Event('loadeddata'));
+    expect(video.classList.contains('lazyloaded')).toBe(true);
+  });
 });
