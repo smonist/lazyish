@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>lazyish – Iframes</title>
+  <style>
+    body { margin: 0; font-family: sans-serif; }
+    .gallery { display: flex; flex-direction: column; gap: 20px; padding: 20px; }
+    iframe {
+      width: 100%;
+      max-width: 800px;
+      height: 450px;
+      border: 1px solid #ccc;
+      background: #eee;
+      display: block;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+    iframe.lazyloaded { opacity: 1; }
+    iframe.lazyerror { opacity: 0.3; background: #f88; }
+    .spacer { height: 100vh; display: flex; align-items: center; justify-content: center; font-size: 2rem; }
+  </style>
+</head>
+<body>
+  <div class="spacer">↓ Scroll down to see lazy-loaded iframes ↓</div>
+  <div class="gallery">
+    <iframe class="lazyload"
+            data-src="https://www.openstreetmap.org/export/embed.html?bbox=-0.1,51.5,-0.08,51.52&layer=mapnik"
+            title="Embedded map 1"
+            loading="lazy"
+            allowfullscreen></iframe>
+    <iframe class="lazyload"
+            data-src="https://www.openstreetmap.org/export/embed.html?bbox=2.33,48.85,2.36,48.87&layer=mapnik"
+            title="Embedded map 2"
+            loading="lazy"
+            allowfullscreen></iframe>
+    <iframe class="lazyload"
+            data-src="https://www.openstreetmap.org/export/embed.html?bbox=12.48,41.88,12.51,41.9&layer=mapnik"
+            title="Embedded map 3"
+            loading="lazy"
+            allowfullscreen></iframe>
+  </div>
+
+  <script type="module">
+    import lazyish from '../dist/lazyish.esm.js';
+    lazyish();
+  </script>
+</body>
+</html>

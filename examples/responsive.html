@@ -10,7 +10,7 @@
     img {
       width: 100%;
       max-width: 100%;
-      height: auto;
+      aspect-ratio: 2 / 1;
       background: #eee;
       display: block;
       opacity: 0;
@@ -33,6 +33,21 @@
          data-srcset="https://picsum.photos/400/200?random=11 400w, https://picsum.photos/800/400?random=11 800w"
          data-sizes="auto"
          alt="Responsive image 2">
+    <img class="lazyload"
+         data-src="https://picsum.photos/800/400?random=12"
+         data-srcset="https://picsum.photos/400/200?random=12 400w, https://picsum.photos/800/400?random=12 800w"
+         data-sizes="auto"
+         alt="Responsive image 3">
+    <img class="lazyload"
+         data-src="https://picsum.photos/800/400?random=13"
+         data-srcset="https://picsum.photos/400/200?random=13 400w, https://picsum.photos/800/400?random=13 800w"
+         data-sizes="auto"
+         alt="Responsive image 4">
+    <img class="lazyload"
+         data-src="https://picsum.photos/800/400?random=14"
+         data-srcset="https://picsum.photos/400/200?random=14 400w, https://picsum.photos/800/400?random=14 800w"
+         data-sizes="auto"
+         alt="Responsive image 5">
   </div>
 
   <script type="module">
