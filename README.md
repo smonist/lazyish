@@ -13,6 +13,7 @@ A lightweight, zero-dependency lazy loading micro-library using native browser A
 - 📦 **ESM / CJS / IIFE** – works everywhere
 - 🖼️ **Images** – `data-src`, `data-srcset`, `data-sizes="auto"`
 - 🎨 **Background images** – `data-bg` on any element
+- 📺 **Iframes** – lazy-load `<iframe>` with `data-src`
 - ⚡ **SPA-friendly** – auto-discovers new elements via MutationObserver
 - 📐 **Responsive** – auto-updates `sizes` via ResizeObserver
 - 🎯 **TypeScript** – fully typed
@@ -44,6 +45,9 @@ Or via CDN:
 
 <!-- Background images -->
 <div class="lazyload" data-bg="hero.jpg"></div>
+
+<!-- Iframes -->
+<iframe class="lazyload" data-src="https://example.com" title="Lazy iframe"></iframe>
 ```
 
 ```js
@@ -100,6 +104,7 @@ See the [`examples/`](examples/) directory:
 - [`basic.html`](examples/basic.html) – Simple image lazy loading
 - [`responsive.html`](examples/responsive.html) – Responsive images with `data-sizes="auto"`
 - [`background.html`](examples/background.html) – Background images with `data-bg`
+- [`iframe.html`](examples/iframe.html) – Lazy-loaded iframes with `data-src`
 - [`spa.html`](examples/spa.html) – SPA / dynamic content with MutationObserver
 
 ## CSS

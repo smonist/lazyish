@@ -157,4 +157,24 @@ describe('lazyish integration', () => {
     // The element should be observed (it was added manually)
     expect(mockIOObserve).toHaveBeenCalledWith(img);
   });
+
+  it('iframe lifecycle: init → intersect → load → class transition', () => {
+    document.body.innerHTML = '<iframe class="lazyload" data-src="https://example.com" title="Test"></iframe>';
+    const iframe = document.querySelector('iframe')!;
+
+    lazyish();
+
+    // Element should be observed
+    expect(mockIOObserve).toHaveBeenCalledWith(iframe);
+
+    // Intersect
+    triggerIntersection(iframe);
+    expect(iframe.getAttribute('src')).toBe('https://example.com');
+    expect(iframe.classList.contains('lazyloading')).toBe(true);
+
+    // Load
+    iframe.dispatchEvent(new Event('load'));
+    expect(iframe.classList.contains('lazyloaded')).toBe(true);
+    expect(iframe.classList.contains('lazyloading')).toBe(false);
+  });
 });

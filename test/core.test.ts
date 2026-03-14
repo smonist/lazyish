@@ -185,6 +185,31 @@ describe('createCore', () => {
     expect(img.classList.contains('lazyloaded')).toBe(true);
   });
 
+  it('observes iframes with data-src', () => {
+    document.body.innerHTML = '<iframe class="lazyload" data-src="https://example.com"></iframe>';
+    const iframe = document.querySelector('iframe')!;
+    createCore(defaultOptions);
+    expect(mockObserve).toHaveBeenCalledWith(iframe);
+  });
+
+  it('copies data-src to src on iframe intersection', () => {
+    document.body.innerHTML = '<iframe class="lazyload" data-src="https://example.com"></iframe>';
+    const iframe = document.querySelector('iframe')!;
+    createCore(defaultOptions);
+    triggerIntersection(iframe);
+    expect(iframe.getAttribute('src')).toBe('https://example.com');
+  });
+
+  it('adds classLoaded on successful iframe load', () => {
+    document.body.innerHTML = '<iframe class="lazyload" data-src="https://example.com"></iframe>';
+    const iframe = document.querySelector('iframe')!;
+    createCore(defaultOptions);
+    triggerIntersection(iframe);
+    iframe.dispatchEvent(new Event('load'));
+    expect(iframe.classList.contains('lazyloaded')).toBe(true);
+    expect(iframe.classList.contains('lazyloading')).toBe(false);
+  });
+
   it('multiple instances do not interfere', () => {
     document.body.innerHTML = `
       <img id="img1" class="lazyload" data-src="image1.jpg">
