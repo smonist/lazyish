@@ -72,7 +72,7 @@ function unveil(el: Element, options: LazyishOptions): void {
     }
 
     // Copy data-src to src on child <source> elements
-    const sources = el.querySelectorAll('source[data-src]');
+    const sources = Array.from(el.querySelectorAll('source[data-src]'));
     for (const source of sources) {
       const sourceSrc = source.getAttribute('data-src');
       if (sourceSrc) {
