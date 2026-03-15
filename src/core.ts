@@ -80,11 +80,6 @@ function unveil(el: Element, options: LazyishOptions): void {
         source.setAttribute('src', sourceSrc);
       }
     }
-
-    // Trigger the video to load the new sources
-    if (sources.length > 0) {
-      el.load();
-    }
   }
 
   onLoad(el, () => {
@@ -98,6 +93,11 @@ function unveil(el: Element, options: LazyishOptions): void {
     addClass(el, options.classError);
     options.onError?.(el);
   });
+
+  // Trigger the video to load after event listeners are attached
+  if (el instanceof HTMLVideoElement) {
+    el.load();
+  }
 }
 
 /**
