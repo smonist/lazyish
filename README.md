@@ -14,6 +14,7 @@ A lightweight, zero-dependency lazy loading micro-library using native browser A
 - 🖼️ **Images** – `data-src`, `data-srcset`, `data-sizes="auto"`
 - 🎨 **Background images** – `data-bg` on any element
 - 📺 **Iframes** – lazy-load `<iframe>` with `data-src`
+- 🎬 **Videos** – lazy-load `<video>` with `data-src`, `data-poster`, and `<source>` children
 - ⚡ **SPA-friendly** – auto-discovers new elements via MutationObserver
 - 📐 **Responsive** – auto-updates `sizes` via ResizeObserver
 - 🎯 **TypeScript** – fully typed
@@ -48,6 +49,15 @@ Or via CDN:
 
 <!-- Iframes -->
 <iframe class="lazyload" data-src="https://example.com" title="Lazy iframe"></iframe>
+
+<!-- Videos -->
+<video class="lazyload" data-src="video.mp4" data-poster="poster.jpg" controls></video>
+
+<!-- Videos with multiple sources -->
+<video class="lazyload" data-poster="poster.jpg" controls>
+  <source data-src="video.mp4" type="video/mp4">
+  <source data-src="video.webm" type="video/webm">
+</video>
 ```
 
 ```js
@@ -105,6 +115,7 @@ See the [`examples/`](examples/) directory:
 - [`responsive.html`](examples/responsive.html) – Responsive images with `data-sizes="auto"`
 - [`background.html`](examples/background.html) – Background images with `data-bg`
 - [`iframe.html`](examples/iframe.html) – Lazy-loaded iframes with `data-src`
+- [`video.html`](examples/video.html) – Lazy-loaded videos with `data-src` and `data-poster`
 - [`spa.html`](examples/spa.html) – SPA / dynamic content with MutationObserver
 
 ## CSS

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>lazyish – Videos</title>
+  <style>
+    body { margin: 0; font-family: sans-serif; }
+    .gallery { display: flex; flex-direction: column; gap: 20px; padding: 20px; }
+    video {
+      width: 100%;
+      max-width: 800px;
+      border: 1px solid #ccc;
+      background: #000;
+      display: block;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+    video.lazyloaded { opacity: 1; }
+    video.lazyerror { opacity: 0.3; background: #f88; }
+    .spacer { height: 100vh; display: flex; align-items: center; justify-content: center; font-size: 2rem; }
+  </style>
+</head>
+<body>
+  <div class="spacer">↓ Scroll down to see lazy-loaded videos ↓</div>
+  <div class="gallery">
+    <!-- Video with data-src directly -->
+    <video class="lazyload"
+           data-src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4"
+           data-poster="https://interactive-examples.mdn.mozilla.net/media/cc0-images/grapefruit-slice-332-702702.jpg"
+           controls
+           muted></video>
+
+    <!-- Video with <source> children -->
+    <video class="lazyload"
+           data-poster="https://interactive-examples.mdn.mozilla.net/media/cc0-images/grapefruit-slice-332-702702.jpg"
+           controls
+           muted>
+      <source data-src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.webm" type="video/webm">
+      <source data-src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4" type="video/mp4">
+    </video>
+  </div>
+
+  <script type="module">
+    import lazyish from '../dist/lazyish.esm.js';
+    lazyish();
+  </script>
+</body>
+</html>
