@@ -277,6 +277,15 @@ describe('createCore', () => {
     expect(loadSpy).toHaveBeenCalled();
   });
 
+  it('calls video.load() when data-src is set directly on video', () => {
+    document.body.innerHTML = '<video class="lazyload" data-src="video.mp4"></video>';
+    const video = document.querySelector('video')!;
+    const loadSpy = vi.spyOn(video, 'load');
+    createCore(defaultOptions);
+    triggerIntersection(video);
+    expect(loadSpy).toHaveBeenCalled();
+  });
+
   it('adds classLoaded on video loadeddata event', () => {
     document.body.innerHTML = '<video class="lazyload" data-src="video.mp4"></video>';
     const video = document.querySelector('video')!;
