@@ -12,7 +12,7 @@ jobs:
           version: 10.33.0
       - uses: actions/setup-node@v6
         with:
-          node-version: '24.14.1'
+          node-version: '25.8.2'
           cache: 'pnpm'
       - run: pnpm install
       - run: pnpm run lint
