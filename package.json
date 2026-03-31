@@ -22,7 +22,10 @@
     "build": "rollup -c",
     "test": "vitest run",
     "lint": "eslint src test --ext .ts",
-    "size": "npx size-limit"
+    "size": "pnpm exec size-limit"
+  },
+  "engines": {
+    "node": ">=24.0.0"
   },
   "size-limit": [
     {
