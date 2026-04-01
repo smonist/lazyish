@@ -18,7 +18,7 @@ beforeEach(() => {
   mockMOObserve.mockClear();
   mockMODisconnect.mockClear();
 
-  vi.stubGlobal('IntersectionObserver', vi.fn((cb: IntersectionObserverCallback) => {
+  vi.stubGlobal('IntersectionObserver', vi.fn(function(cb: IntersectionObserverCallback) {
     intersectionCallback = cb;
     return {
       observe: mockIOObserve,
@@ -31,7 +31,7 @@ beforeEach(() => {
     };
   }));
 
-  vi.stubGlobal('MutationObserver', vi.fn((cb: MutationCallback) => {
+  vi.stubGlobal('MutationObserver', vi.fn(function(cb: MutationCallback) {
     mutationCallback = cb;
     return {
       observe: mockMOObserve,
@@ -40,13 +40,13 @@ beforeEach(() => {
     };
   }));
 
-  vi.stubGlobal('ResizeObserver', vi.fn(() => ({
+  vi.stubGlobal('ResizeObserver', vi.fn(function() { return {
     observe: vi.fn(),
     unobserve: vi.fn(),
     disconnect: vi.fn(),
-  })));
+  }; }));
 
-  vi.stubGlobal('requestAnimationFrame', vi.fn((cb: FrameRequestCallback) => {
+  vi.stubGlobal('requestAnimationFrame', vi.fn(function(cb: FrameRequestCallback) {
     cb(0);
     return 0;
   }));

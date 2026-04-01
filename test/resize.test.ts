@@ -9,7 +9,7 @@ beforeEach(() => {
   mockObserve.mockClear();
   mockDisconnect.mockClear();
 
-  vi.stubGlobal('ResizeObserver', vi.fn((cb: ResizeObserverCallback) => {
+  vi.stubGlobal('ResizeObserver', vi.fn(function(cb: ResizeObserverCallback) {
     resizeCallback = cb;
     return {
       observe: mockObserve,

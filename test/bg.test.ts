@@ -16,7 +16,7 @@ describe('loadBackground', () => {
     document.body.appendChild(el);
 
     let onLoadCb: (() => void) | null = null;
-    vi.spyOn(window, 'Image').mockImplementation(() => {
+    vi.spyOn(window, 'Image').mockImplementation(function() {
       const img = {
         onload: null as (() => void) | null,
         onerror: null as (() => void) | null,
@@ -52,7 +52,7 @@ describe('loadBackground', () => {
     document.body.appendChild(el);
 
     let onErrorCb: (() => void) | null = null;
-    vi.spyOn(window, 'Image').mockImplementation(() => {
+    vi.spyOn(window, 'Image').mockImplementation(function() {
       const img = {
         onload: null as (() => void) | null,
         onerror: null as (() => void) | null,
@@ -81,7 +81,7 @@ describe('loadBackground', () => {
     document.body.appendChild(el);
 
     let onLoadCb: (() => void) | null = null;
-    vi.spyOn(window, 'Image').mockImplementation(() => {
+    vi.spyOn(window, 'Image').mockImplementation(function() {
       const img = {
         onload: null as (() => void) | null,
         onerror: null as (() => void) | null,
@@ -107,7 +107,7 @@ describe('loadBackground', () => {
     document.body.appendChild(el);
 
     let onErrorCb: (() => void) | null = null;
-    vi.spyOn(window, 'Image').mockImplementation(() => {
+    vi.spyOn(window, 'Image').mockImplementation(function() {
       const img = {
         onload: null as (() => void) | null,
         onerror: null as (() => void) | null,

@@ -26,7 +26,7 @@ beforeEach(() => {
   mockUnobserve.mockClear();
   mockDisconnect.mockClear();
 
-  vi.stubGlobal('IntersectionObserver', vi.fn((cb: IntersectionObserverCallback) => {
+  vi.stubGlobal('IntersectionObserver', vi.fn(function(cb: IntersectionObserverCallback) {
     intersectionCallback = cb;
     return {
       observe: mockObserve,
@@ -39,11 +39,11 @@ beforeEach(() => {
     };
   }));
 
-  vi.stubGlobal('ResizeObserver', vi.fn(() => ({
+  vi.stubGlobal('ResizeObserver', vi.fn(function() { return {
     observe: vi.fn(),
     unobserve: vi.fn(),
     disconnect: vi.fn(),
-  })));
+  }; }));
 });
 
 afterEach(() => {

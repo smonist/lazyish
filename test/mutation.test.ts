@@ -10,7 +10,7 @@ beforeEach(() => {
   mockObserve.mockClear();
   mockDisconnect.mockClear();
 
-  vi.stubGlobal('MutationObserver', vi.fn((cb: MutationCallback) => {
+  vi.stubGlobal('MutationObserver', vi.fn(function(cb: MutationCallback) {
     mutationCallback = cb;
     return {
       observe: mockObserve,
@@ -19,7 +19,7 @@ beforeEach(() => {
     };
   }));
 
-  vi.stubGlobal('requestAnimationFrame', vi.fn((cb: FrameRequestCallback) => {
+  vi.stubGlobal('requestAnimationFrame', vi.fn(function(cb: FrameRequestCallback) {
     cb(0);
     return 0;
   }));
