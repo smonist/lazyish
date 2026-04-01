@@ -8,5 +8,17 @@
     "group:allNonMajor"
   ],
   "schedule": ["before 2am on saturday"],
-  "lockFileMaintenance": { "enabled": true, "schedule": ["before 2am on saturday"] }
+  "lockFileMaintenance": { "enabled": true, "schedule": ["before 2am on saturday"] },
+  "packageRules": [
+    {
+      "matchDepTypes": ["engines"],
+      "matchPackageNames": ["node"],
+      "enabled": false
+    },
+    {
+      "matchManagers": ["github-actions"],
+      "matchPackageNames": ["node"],
+      "enabled": false
+    }
+  ]
 }
