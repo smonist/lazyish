@@ -119,6 +119,17 @@ function setupPassive(el: Element, options: LazyishOptions): void {
     return;
   }
 
+  if (el instanceof HTMLMediaElement) {
+    if (el.readyState >= 2) { // HAVE_CURRENT_DATA
+      addClass(el, options.classLoaded);
+      return;
+    }
+    if (el.error) {
+      addClass(el, options.classError);
+      return;
+    }
+  }
+
   onLoad(el, () => {
     addClass(el, options.classLoaded);
     options.onLoad?.(el);

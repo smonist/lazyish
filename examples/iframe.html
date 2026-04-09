@@ -25,20 +25,23 @@
 <body>
   <div class="spacer">↓ Scroll down to see lazy-loaded iframes ↓</div>
   <div class="gallery">
+    <!-- Active mode (data-src) -->
     <iframe class="lazyload"
             data-src="https://www.openstreetmap.org/export/embed.html?bbox=-0.1,51.5,-0.08,51.52&layer=mapnik"
-            title="Embedded map 1"
-            loading="lazy"
+            title="Embedded map 1 (Observer)"
             allowfullscreen></iframe>
+
+    <!-- Passive mode (src + loading="lazy") -->
     <iframe class="lazyload"
-            data-src="https://www.openstreetmap.org/export/embed.html?bbox=2.33,48.85,2.36,48.87&layer=mapnik"
-            title="Embedded map 2"
+            src="https://www.openstreetmap.org/export/embed.html?bbox=2.33,48.85,2.36,48.87&layer=mapnik"
+            title="Embedded map 2 (Passive native lazy)"
             loading="lazy"
             allowfullscreen></iframe>
+
+    <!-- Active mode (data-src) -->
     <iframe class="lazyload"
             data-src="https://www.openstreetmap.org/export/embed.html?bbox=12.48,41.88,12.51,41.9&layer=mapnik"
-            title="Embedded map 3"
-            loading="lazy"
+            title="Embedded map 3 (Observer)"
             allowfullscreen></iframe>
   </div>
 

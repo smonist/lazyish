@@ -28,6 +28,10 @@ export function onLoad(el: Element, callback: () => void): void {
     callback();
     return;
   }
+  if (el instanceof HTMLMediaElement && el.readyState >= 2) {
+    callback();
+    return;
+  }
   const event = el instanceof HTMLMediaElement ? 'loadeddata' : 'load';
   el.addEventListener(event, callback, { once: true });
 }

@@ -35,9 +35,11 @@ Or via CDN:
 ## Quick Start
 
 ```html
-<!-- Native lazy images & media -->
+<!-- Native lazy images & media (also works for <video> and <audio>) -->
 <img class="lazyload" src="image.jpg" loading="lazy" alt="passive">
 <iframe class="lazyload" src="embed.html" loading="lazy"></iframe>
+<video class="lazyload" src="video.mp4" loading="lazy" controls></video>
+<audio class="lazyload" src="audio.mp3" loading="lazy" controls></audio>
 
 <!-- Observer-controlled responsive images -->
 <img class="lazyload"

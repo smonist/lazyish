@@ -24,17 +24,28 @@
 <body>
   <div class="spacer">↓ Scroll down to see lazy-loaded videos ↓</div>
   <div class="gallery">
-    <!-- Video with data-src directly -->
+    <!-- Active mode: observer-controlled Video with data-src directly -->
     <video class="lazyload"
            data-src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4"
            data-poster="https://interactive-examples.mdn.mozilla.net/media/cc0-images/grapefruit-slice-332-702702.jpg"
            controls
+           autoplay
            muted></video>
 
-    <!-- Video with <source> children -->
+    <!-- Passive mode: native lazy-loaded Video -->
+    <video class="lazyload"
+           src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.webm"
+           poster="https://interactive-examples.mdn.mozilla.net/media/cc0-images/grapefruit-slice-332-702702.jpg"
+           loading="lazy"
+           controls
+           autoplay
+           muted></video>
+
+    <!-- Active mode: observer-controlled Video with <source> children -->
     <video class="lazyload"
            data-poster="https://interactive-examples.mdn.mozilla.net/media/cc0-images/grapefruit-slice-332-702702.jpg"
            controls
+           autoplay
            muted>
       <source data-src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.webm" type="video/webm">
       <source data-src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4" type="video/mp4">
