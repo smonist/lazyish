@@ -15,8 +15,14 @@ function isObserverMode(el: Element): boolean {
  * (has src + loading="lazy", no data-src).
  */
 function isPassiveMode(el: Element): boolean {
+  const isPassiveElement =
+    el instanceof HTMLImageElement ||
+    el instanceof HTMLIFrameElement ||
+    el instanceof HTMLVideoElement ||
+    el instanceof HTMLAudioElement;
+
   return (
-    el instanceof HTMLImageElement &&
+    isPassiveElement &&
     el.hasAttribute('src') &&
     el.getAttribute('loading') === 'lazy' &&
     !el.hasAttribute('data-src')
@@ -104,23 +110,24 @@ function unveil(el: Element, options: LazyishOptions): void {
  * Set up class lifecycle for a passive-mode element (loading="lazy").
  */
 function setupPassive(el: Element, options: LazyishOptions): void {
-  const img = el as HTMLImageElement;
-  if (img.complete) {
-    if (img.naturalWidth > 0) {
+  if (el instanceof HTMLImageElement && el.complete) {
+    if (el.naturalWidth > 0) {
       addClass(el, options.classLoaded);
     } else {
       addClass(el, options.classError);
     }
     return;
   }
-  el.addEventListener('load', () => {
+
+  onLoad(el, () => {
     addClass(el, options.classLoaded);
     options.onLoad?.(el);
-  }, { once: true });
-  el.addEventListener('error', () => {
+  });
+
+  onError(el, () => {
     addClass(el, options.classError);
     options.onError?.(el);
-  }, { once: true });
+  });
 }
 
 export interface CoreController {

@@ -11,6 +11,7 @@ A lightweight, zero-dependency lazy loading micro-library using native browser A
 - 🚀 **Tiny** – under 2 KB minified + gzipped
 - 🔌 **Zero dependencies** – uses native browser APIs only
 - 📦 **ESM / CJS / IIFE** – works everywhere
+- 🔀 **Two modes** – passive (`loading="lazy"`) and active pipelines (`data-*`)
 - 🖼️ **Images** – `data-src`, `data-srcset`, `data-sizes="auto"`
 - 🎨 **Background images** – `data-bg` on any element
 - 📺 **Iframes** – lazy-load `<iframe>` with `data-src`
@@ -34,15 +35,16 @@ Or via CDN:
 ## Quick Start
 
 ```html
-<!-- Mark images with class="lazyload" and data-src -->
-<img class="lazyload" data-src="image.jpg" alt="My image">
+<!-- Native lazy images & media -->
+<img class="lazyload" src="image.jpg" loading="lazy" alt="passive">
+<iframe class="lazyload" src="embed.html" loading="lazy"></iframe>
 
-<!-- Responsive images -->
+<!-- Observer-controlled responsive images -->
 <img class="lazyload"
-     data-src="image-800.jpg"
-     data-srcset="image-400.jpg 400w, image-800.jpg 800w"
+     data-src="img-800.jpg"
+     data-srcset="img-400.jpg 400w, img-800.jpg 800w"
      data-sizes="auto"
-     alt="Responsive image">
+     alt="active">
 
 <!-- Background images -->
 <div class="lazyload" data-bg="hero.jpg"></div>
@@ -75,6 +77,42 @@ lazyish({
 });
 ```
 
+## Modes: Active vs Passive
+
+lazyish supports two ways to work with lazy loading.
+
+### Passive mode (native `loading="lazy"`)
+
+Use normal media markup with native lazy loading:
+
+```html
+<img class="lazyload" src="image.jpg" loading="lazy" alt="...">
+```
+
+In passive mode, the browser controls fetching. lazyish handles CSS class lifecycle (`lazyloaded`/`lazyerror`) and callbacks.
+
+- Supported elements: `<img>`, `<iframe>`, `<video>`, `<audio>`
+- Requirements: has `src`, has `loading="lazy"`, NO `data-*` attributes.
+- Note: browser controls fetch timing; may vary by element/browser (espcially `<video>`/`<audio>`).
+
+### Active mode (IntersectionObserver)
+
+Use `data-*` attributes (`data-src`, `data-bg`, etc) and let lazyish unveil via `IntersectionObserver`.
+
+- Supported elements: `<img>`, `<iframe>`, `<video>`, any `[data-bg]`
+- Behavior: custom preload margins, responsive auto-sizing, unveil hooks.
+
+### Default mode by element
+
+- `<img>`, `<audio>`: **Passive mode** by default (`src` + `loading="lazy"`).
+- `<iframe>`, `<video>`: **Passive mode** for simple embeds, **Active mode** when using `data-src`/`data-poster` or needing observer tuning.
+- Backgrounds (`data-bg="..."`): **Active mode** always.
+
+### Which should I use?
+
+- Use **passive** for most regular images/media.
+- Use **active** for responsive pipes (`data-srcset`), fine-grained observer control, backgrounds, and older browser `<video>`/`<iframe>` support.
+
 ## API
 
 ### `lazyish(options?): LazyishInstance`
@@ -83,20 +121,20 @@ Initializes lazy loading and returns an instance.
 
 ### Options
 
-| Option | Type | Default | Description |
-|--------|------|---------|-------------|
-| `selector` | `string` | `'.lazyload'` | CSS selector for lazy elements |
-| `classLoading` | `string` | `'lazyloading'` | Class added while loading |
-| `classLoaded` | `string` | `'lazyloaded'` | Class added when loaded |
-| `classError` | `string` | `'lazyerror'` | Class added on error |
-| `rootMargin` | `string` | `'200px'` | IntersectionObserver root margin |
-| `threshold` | `number\|number[]` | `0` | IntersectionObserver threshold |
-| `observeDOM` | `boolean` | `true` | Auto-discover new elements |
-| `autoSizes` | `boolean` | `true` | Auto-compute `sizes` attribute |
-| `backgroundImages` | `boolean` | `true` | Support `data-bg` |
-| `onLoad` | `(el) => void` | — | Callback on successful load |
-| `onError` | `(el) => void` | — | Callback on load error |
-| `onBeforeUnveil` | `(el) => void` | — | Callback before unveiling |
+| Option | Type | Default | Mode | Description |
+|--------|------|---------|------|-------------|
+| `selector` | `string` | `'.lazyload'` | Both | CSS selector for lazy elements |
+| `classLoading` | `string` | `'lazyloading'` | Both | Class added while loading |
+| `classLoaded` | `string` | `'lazyloaded'` | Both | Class added when loaded |
+| `classError` | `string` | `'lazyerror'` | Both | Class added on error |
+| `rootMargin` | `string` | `'200px'` | Active | IntersectionObserver root margin |
+| `threshold` | `number\|number[]` | `0` | Active | IntersectionObserver threshold |
+| `observeDOM` | `boolean` | `true` | Both | Auto-discover new elements |
+| `autoSizes` | `boolean` | `true` | Active | Auto-compute `sizes` attribute |
+| `backgroundImages` | `boolean` | `true` | Active | Support `data-bg` |
+| `onLoad` | `(el) => void` | — | Both | Callback on successful load |
+| `onError` | `(el) => void` | — | Both | Callback on load error |
+| `onBeforeUnveil` | `(el) => void` | — | Active | Callback before unveiling |
 
 ### Instance Methods
 

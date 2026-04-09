@@ -185,6 +185,33 @@ describe('createCore', () => {
     expect(img.classList.contains('lazyloaded')).toBe(true);
   });
 
+  it('passive mode: adds classLoaded for loading=lazy iframe that loads', () => {
+    document.body.innerHTML = '<iframe class="lazyload" src="https://example.com" loading="lazy"></iframe>';
+    const iframe = document.querySelector('iframe')!;
+    createCore(defaultOptions);
+    iframe.dispatchEvent(new Event('load'));
+    expect(iframe.classList.contains('lazyloaded')).toBe(true);
+    expect(mockObserve).not.toHaveBeenCalled();
+  });
+
+  it('passive mode: adds classLoaded for loading=lazy video on loadeddata', () => {
+    document.body.innerHTML = '<video class="lazyload" src="video.mp4" loading="lazy"></video>';
+    const video = document.querySelector('video')!;
+    createCore(defaultOptions);
+    video.dispatchEvent(new Event('loadeddata'));
+    expect(video.classList.contains('lazyloaded')).toBe(true);
+    expect(mockObserve).not.toHaveBeenCalled();
+  });
+
+  it('passive mode: adds classLoaded for loading=lazy audio on loadeddata', () => {
+    document.body.innerHTML = '<audio class="lazyload" src="audio.mp3" loading="lazy"></audio>';
+    const audio = document.querySelector('audio')!;
+    createCore(defaultOptions);
+    audio.dispatchEvent(new Event('loadeddata'));
+    expect(audio.classList.contains('lazyloaded')).toBe(true);
+    expect(mockObserve).not.toHaveBeenCalled();
+  });
+
   it('observes iframes with data-src', () => {
     document.body.innerHTML = '<iframe class="lazyload" data-src="https://example.com"></iframe>';
     const iframe = document.querySelector('iframe')!;

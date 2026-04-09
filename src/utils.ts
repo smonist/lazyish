@@ -21,14 +21,14 @@ export function removeClass(el: Element, className: string): void {
 
 /**
  * Attach a load event listener to an element, handling cached images.
- * For video elements, listens for 'loadeddata' instead of 'load'.
+ * For media elements, listens for 'loadeddata' instead of 'load'.
  */
 export function onLoad(el: Element, callback: () => void): void {
   if (el instanceof HTMLImageElement && isImageCached(el)) {
     callback();
     return;
   }
-  const event = el instanceof HTMLVideoElement ? 'loadeddata' : 'load';
+  const event = el instanceof HTMLMediaElement ? 'loadeddata' : 'load';
   el.addEventListener(event, callback, { once: true });
 }
 
