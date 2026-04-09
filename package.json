@@ -1,6 +1,6 @@
 {
   "name": "lazyish",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "A lightweight, zero-dependency lazy loading micro-library using native browser APIs",
   "main": "dist/lazyish.cjs.js",
   "module": "dist/lazyish.esm.js",
