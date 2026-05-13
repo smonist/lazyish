@@ -30,6 +30,9 @@ jobs:
       - name: Install npm@latest
         run: npm install -g npm@latest
 
+      - name: Check npm version
+        run: npm --version
+
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
