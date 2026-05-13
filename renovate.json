@@ -12,12 +12,12 @@
   "packageRules": [
     {
       "matchDepTypes": ["engines"],
-      "matchPackageNames": ["node"],
+      "matchDepNames": ["node"],
       "enabled": false
     },
     {
       "matchManagers": ["github-actions"],
-      "matchPackageNames": ["node"],
+      "matchDepNames": ["node"],
       "enabled": false
     }
   ]
