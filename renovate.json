@@ -20,5 +20,7 @@
       "matchDepNames": ["node"],
       "enabled": false
     }
-  ]
+  ],
+  "minimumReleaseAge": "7 days",
+  "internalChecksFilter": "strict"
 }
