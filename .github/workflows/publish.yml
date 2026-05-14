@@ -24,7 +24,6 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: '24' # Specify your target Node.js version
-          registry-url: 'https://registry.npmjs.org'
           cache: 'pnpm'
 
       - name: Install npm@latest
