@@ -17,7 +17,7 @@ const defaults: LazyishOptions = {
 /**
  * Initialize lazyish lazy loading.
  */
-export function lazyish(userOptions: Partial<LazyishOptions> = {}): LazyishInstance {
+function lazyish(userOptions: Partial<LazyishOptions> = {}): LazyishInstance {
   const options: LazyishOptions = { ...defaults, ...userOptions };
   const core = createCore(options);
 

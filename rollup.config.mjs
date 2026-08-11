@@ -14,7 +14,7 @@ export default [
     plugins: [tsPlugin, terser()],
   },
   {
-    input: 'src/bundle.ts',
+    input: 'src/index.ts',
     output: {
       file: 'dist/lazyish.cjs.js',
       format: 'cjs',
@@ -24,7 +24,7 @@ export default [
     plugins: [tsPlugin, terser()],
   },
   {
-    input: 'src/bundle.ts',
+    input: 'src/index.ts',
     output: {
       file: 'dist/lazyish.iife.js',
       format: 'iife',

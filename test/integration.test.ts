@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { lazyish } from '../src/index';
+import lazyish from '../src/index';
 
 let intersectionCallback: IntersectionObserverCallback;
 const mockIOObserve = vi.fn();
