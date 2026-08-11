@@ -1,12 +1,11 @@
 import typescript from '@rollup/plugin-typescript';
 import terser from '@rollup/plugin-terser';
 
-const input = 'src/index.ts';
 const tsPlugin = typescript({ tsconfig: './tsconfig.json' });
 
 export default [
   {
-    input,
+    input: 'src/index.ts',
     output: {
       file: 'dist/lazyish.esm.js',
       format: 'esm',
@@ -15,23 +14,23 @@ export default [
     plugins: [tsPlugin, terser()],
   },
   {
-    input,
+    input: 'src/bundle.ts',
     output: {
       file: 'dist/lazyish.cjs.js',
       format: 'cjs',
       sourcemap: true,
-      exports: 'named',
+      exports: 'default',
     },
     plugins: [tsPlugin, terser()],
   },
   {
-    input,
+    input: 'src/bundle.ts',
     output: {
       file: 'dist/lazyish.iife.js',
       format: 'iife',
       name: 'lazyish',
       sourcemap: true,
-      exports: 'named',
+      exports: 'default',
     },
     plugins: [tsPlugin, terser()],
   },
