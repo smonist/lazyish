@@ -7,7 +7,19 @@ import { setupAutoSizes } from './resize.js';
  * Determine if an element is in OBSERVER MODE (has data-src, data-srcset, or data-poster).
  */
 function isObserverMode(el: Element): boolean {
-  return el.hasAttribute('data-src') || el.hasAttribute('data-srcset') || el.hasAttribute('data-poster');
+  return (
+    el.hasAttribute('data-src') ||
+    el.hasAttribute('data-srcset') ||
+    el.hasAttribute('data-poster') ||
+    getPictureSources(el).length > 0
+  );
+}
+
+function getPictureSources(el: Element): HTMLSourceElement[] {
+  if (!(el instanceof HTMLImageElement) || !(el.parentElement instanceof HTMLPictureElement)) {
+    return [];
+  }
+  return Array.from(el.parentElement.querySelectorAll('source[data-srcset]'));
 }
 
 /**
@@ -58,6 +70,14 @@ function unveil(el: Element, options: LazyishOptions): void {
   const dataSrc = el.getAttribute('data-src');
   const dataSrcset = el.getAttribute('data-srcset');
   const dataSizes = el.getAttribute('data-sizes');
+
+  for (const source of getPictureSources(el)) {
+    const sourceSrcset = source.getAttribute('data-srcset');
+    if (sourceSrcset) {
+      source.removeAttribute('data-srcset');
+      source.setAttribute('srcset', sourceSrcset);
+    }
+  }
 
   if (dataSrc) {
     el.removeAttribute('data-src');

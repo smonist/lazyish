@@ -149,6 +149,23 @@ describe('createCore', () => {
     expect(img.getAttribute('sizes')).toBe('400px');
   });
 
+  it('observes and unveils picture sources with data-srcset', () => {
+    document.body.innerHTML = `
+      <picture>
+        <source data-srcset="image.webp" type="image/webp">
+        <img class="lazyload" src="fallback.jpg">
+      </picture>`;
+    const img = document.querySelector('img')!;
+    const source = document.querySelector('source')!;
+
+    createCore(defaultOptions);
+    expect(mockObserve).toHaveBeenCalledWith(img);
+
+    triggerIntersection(img);
+    expect(source.getAttribute('srcset')).toBe('image.webp');
+    expect(source.hasAttribute('data-srcset')).toBe(false);
+  });
+
   it('does not process elements twice', () => {
     document.body.innerHTML = '<img class="lazyload" data-src="image.jpg">';
     const img = document.querySelector('img')!;

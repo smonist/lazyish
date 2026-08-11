@@ -13,6 +13,7 @@ A lightweight, zero-dependency lazy loading micro-library using native browser A
 - 📦 **ESM / CJS / IIFE** – works everywhere
 - 🔀 **Two modes** – passive (`loading="lazy"`) and active pipelines (`data-*`)
 - 🖼️ **Images** – `data-src`, `data-srcset`, `data-sizes="auto"`
+- 🖼️ **Picture sources** – `<source data-srcset>` inside `<picture>`
 - 🎨 **Background images** – `data-bg` on any element
 - 📺 **Iframes** – lazy-load `<iframe>` with `data-src`
 - 🎬 **Videos** – lazy-load `<video>` with `data-src`, `data-poster`, and `<source>` children
@@ -47,6 +48,12 @@ Or via CDN:
      data-srcset="img-400.jpg 400w, img-800.jpg 800w"
      data-sizes="auto"
      alt="active">
+
+<!-- Picture sources (put lazyload on the fallback image) -->
+<picture>
+  <source data-srcset="image.webp" type="image/webp">
+  <img class="lazyload" data-src="image.jpg" alt="responsive">
+</picture>
 
 <!-- Background images -->
 <div class="lazyload" data-bg="hero.jpg"></div>
