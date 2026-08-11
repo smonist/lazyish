@@ -1,7 +1,7 @@
 /**
  * Check if an image is already cached/loaded by the browser.
  */
-export function isImageCached(el: HTMLImageElement): boolean {
+function isImageCached(el: HTMLImageElement): boolean {
   return el.complete && el.naturalWidth > 0;
 }
 

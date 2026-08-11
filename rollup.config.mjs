@@ -16,7 +16,7 @@ export default [
   {
     input: 'src/index.ts',
     output: {
-      file: 'dist/lazyish.cjs.js',
+      file: 'dist/lazyish.cjs',
       format: 'cjs',
       sourcemap: true,
       exports: 'default',

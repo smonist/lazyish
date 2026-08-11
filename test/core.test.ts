@@ -226,6 +226,35 @@ describe('createCore', () => {
     expect(img.classList.contains('lazyloading')).toBe(false);
   });
 
+  it('passive mode: accepts case-insensitive loading values', () => {
+    document.body.innerHTML = '<img class="lazyload" src="image.jpg" loading="LAZY">';
+    const img = document.querySelector('img')!;
+    Object.defineProperty(img, 'complete', { value: false, configurable: true });
+
+    createCore(defaultOptions);
+
+    expect(img.classList.contains('lazyloading')).toBe(true);
+  });
+
+  it('passive mode: fires callbacks for already-settled images', () => {
+    document.body.innerHTML = `
+      <img id="loaded" class="lazyload" src="image.jpg" loading="lazy">
+      <img id="failed" class="lazyload" src="bad.jpg" loading="lazy">`;
+    const loaded = document.getElementById('loaded') as HTMLImageElement;
+    const failed = document.getElementById('failed') as HTMLImageElement;
+    Object.defineProperty(loaded, 'complete', { value: true, configurable: true });
+    Object.defineProperty(loaded, 'naturalWidth', { value: 100, configurable: true });
+    Object.defineProperty(failed, 'complete', { value: true, configurable: true });
+    Object.defineProperty(failed, 'naturalWidth', { value: 0, configurable: true });
+    const onLoad = vi.fn();
+    const onError = vi.fn();
+
+    createCore({ ...defaultOptions, onLoad, onError });
+
+    expect(onLoad).toHaveBeenCalledWith(loaded);
+    expect(onError).toHaveBeenCalledWith(failed);
+  });
+
   it('passive mode: adds classLoaded for loading=lazy iframe that loads', () => {
     document.body.innerHTML = '<iframe class="lazyload" src="https://example.com" loading="lazy"></iframe>';
     const iframe = document.querySelector('iframe')!;

@@ -36,7 +36,7 @@ function isPassiveMode(el: Element): boolean {
   return (
     isPassiveElement &&
     el.hasAttribute('src') &&
-    el.getAttribute('loading') === 'lazy' &&
+    el.getAttribute('loading')?.toLowerCase() === 'lazy' &&
     !el.hasAttribute('data-src')
   );
 }
@@ -136,8 +136,10 @@ function setupPassive(el: Element, options: LazyishOptions): void {
   if (el instanceof HTMLImageElement && el.complete) {
     if (el.naturalWidth > 0) {
       addClass(el, options.classLoaded);
+      options.onLoad?.(el);
     } else {
       addClass(el, options.classError);
+      options.onError?.(el);
     }
     return;
   }
@@ -145,10 +147,12 @@ function setupPassive(el: Element, options: LazyishOptions): void {
   if (el instanceof HTMLMediaElement) {
     if (el.readyState >= 2) { // HAVE_CURRENT_DATA
       addClass(el, options.classLoaded);
+      options.onLoad?.(el);
       return;
     }
     if (el.error) {
       addClass(el, options.classError);
+      options.onError?.(el);
       return;
     }
   }

@@ -32,11 +32,29 @@ jobs:
       - name: Check npm version
         run: npm --version
 
+      - name: Validate release version
+        run: test "$GITHUB_REF_NAME" = "$(node -p "require('./package.json').version")"
+
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Lint project
+        run: pnpm run lint
+
+      - name: Test project
+        run: pnpm test
+
       - name: Build project
         run: pnpm run build
+
+      - name: Test package outputs
+        run: pnpm run test:package
+
+      - name: Check package size
+        run: pnpm run size
+
+      - name: Inspect package
+        run: npm pack --dry-run
 
       - name: Publish package
         run: npm publish --provenance

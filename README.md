@@ -184,7 +184,7 @@ img.lazyerror {
 
 ## Browser Support
 
-All modern browsers that support IntersectionObserver (Chrome 51+, Firefox 55+, Safari 12.1+, Edge 15+).
+Browsers with ES2020 syntax and the required observer APIs: Chrome 80+, Firefox 74+, Safari 13.1+, and Edge 80+.
 
 ## License
 

@@ -20,12 +20,6 @@ importers:
       '@size-limit/preset-small-lib':
         specifier: 13.0.3
         version: 13.0.3(size-limit@13.0.3)
-      '@typescript-eslint/eslint-plugin':
-        specifier: 8.66.0
-        version: 8.66.0(@typescript-eslint/parser@8.66.0(eslint@10.8.1)(typescript@6.0.3))(eslint@10.8.1)(typescript@6.0.3)
-      '@typescript-eslint/parser':
-        specifier: 8.66.0
-        version: 8.66.0(eslint@10.8.1)(typescript@6.0.3)
       eslint:
         specifier: 10.8.1
         version: 10.8.1
