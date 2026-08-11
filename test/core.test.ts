@@ -208,8 +208,22 @@ describe('createCore', () => {
     Object.defineProperty(img, 'complete', { value: false, configurable: true });
     Object.defineProperty(img, 'naturalWidth', { value: 0, configurable: true });
     createCore(defaultOptions);
+    expect(img.classList.contains('lazyloading')).toBe(true);
+
     img.dispatchEvent(new Event('load'));
     expect(img.classList.contains('lazyloaded')).toBe(true);
+    expect(img.classList.contains('lazyloading')).toBe(false);
+  });
+
+  it('passive mode: replaces classLoading with classError on failure', () => {
+    document.body.innerHTML = '<img class="lazyload" src="bad.jpg" loading="lazy">';
+    const img = document.querySelector('img')!;
+    Object.defineProperty(img, 'complete', { value: false, configurable: true });
+    createCore(defaultOptions);
+
+    img.dispatchEvent(new Event('error'));
+    expect(img.classList.contains('lazyerror')).toBe(true);
+    expect(img.classList.contains('lazyloading')).toBe(false);
   });
 
   it('passive mode: adds classLoaded for loading=lazy iframe that loads', () => {

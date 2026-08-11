@@ -153,12 +153,16 @@ function setupPassive(el: Element, options: LazyishOptions): void {
     }
   }
 
+  addClass(el, options.classLoading);
+
   onLoad(el, () => {
+    removeClass(el, options.classLoading);
     addClass(el, options.classLoaded);
     options.onLoad?.(el);
   });
 
   onError(el, () => {
+    removeClass(el, options.classLoading);
     addClass(el, options.classError);
     options.onError?.(el);
   });
