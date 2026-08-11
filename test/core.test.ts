@@ -79,6 +79,16 @@ describe('createCore', () => {
     createCore(defaultOptions);
     triggerIntersection(img);
     expect(img.classList.contains('lazyloading')).toBe(true);
+    expect(img.classList.contains('lazyload')).toBe(false);
+  });
+
+  it('supports compound selectors without invalid class removal', () => {
+    document.body.innerHTML = '<img data-lazy data-src="image.jpg">';
+    const img = document.querySelector('img')!;
+    createCore({ ...defaultOptions, selector: '.lazyload, [data-lazy]' });
+
+    expect(() => triggerIntersection(img)).not.toThrow();
+    expect(img.getAttribute('src')).toBe('image.jpg');
   });
 
   it('adds classLoaded on successful load', () => {

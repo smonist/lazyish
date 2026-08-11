@@ -50,7 +50,10 @@ function unveil(el: Element, options: LazyishOptions): void {
   }
 
   addClass(el, options.classLoading);
-  removeClass(el, options.selector.replace(/^\./, ''));
+  const selectorClass = /^\.([\w-]+)$/.exec(options.selector)?.[1];
+  if (selectorClass) {
+    removeClass(el, selectorClass);
+  }
 
   const dataSrc = el.getAttribute('data-src');
   const dataSrcset = el.getAttribute('data-srcset');
