@@ -24,7 +24,7 @@ afterEach(() => {
 });
 
 describe('setupAutoSizes', () => {
-  it('sets initial sizes based on parent width', () => {
+  it('falls back to parent width when the element has no width', () => {
     const parent = document.createElement('div');
     const img = document.createElement('img');
     img.setAttribute('data-sizes', 'auto');
@@ -50,7 +50,44 @@ describe('setupAutoSizes', () => {
     document.body.removeChild(parent);
   });
 
-  it('observes parent element for resize events', () => {
+  it('uses the rendered element width when available', () => {
+    const parent = document.createElement('div');
+    const img = document.createElement('img');
+    img.setAttribute('data-sizes', 'auto');
+    parent.appendChild(img);
+    document.body.appendChild(parent);
+
+    vi.spyOn(img, 'getBoundingClientRect').mockReturnValue({
+      width: 300,
+      height: 0,
+      top: 0,
+      left: 0,
+      bottom: 0,
+      right: 0,
+      x: 0,
+      y: 0,
+      toJSON: () => ({}),
+    });
+    vi.spyOn(parent, 'getBoundingClientRect').mockReturnValue({
+      width: 1200,
+      height: 0,
+      top: 0,
+      left: 0,
+      bottom: 0,
+      right: 0,
+      x: 0,
+      y: 0,
+      toJSON: () => ({}),
+    });
+
+    setupAutoSizes([img]);
+
+    expect(img.getAttribute('sizes')).toBe('300px');
+
+    document.body.removeChild(parent);
+  });
+
+  it('observes the element for resize events', () => {
     const parent = document.createElement('div');
     const img = document.createElement('img');
     img.setAttribute('data-sizes', 'auto');
@@ -71,7 +108,7 @@ describe('setupAutoSizes', () => {
 
     setupAutoSizes([img]);
 
-    expect(mockObserve).toHaveBeenCalledWith(parent);
+    expect(mockObserve).toHaveBeenCalledWith(img);
 
     document.body.removeChild(parent);
   });
@@ -99,7 +136,7 @@ describe('setupAutoSizes', () => {
 
     // Simulate resize
     resizeCallback(
-      [{ target: parent, contentRect: { width: 1200 } } as unknown as ResizeObserverEntry],
+      [{ target: img, contentRect: { width: 1200 } } as unknown as ResizeObserverEntry],
       {} as ResizeObserver,
     );
 
@@ -167,7 +204,7 @@ describe('setupAutoSizes', () => {
     controller.observe(img);
 
     expect(img.getAttribute('sizes')).toBe('600px');
-    expect(mockObserve).toHaveBeenCalledWith(parent);
+    expect(mockObserve).toHaveBeenCalledWith(img);
 
     document.body.removeChild(parent);
   });

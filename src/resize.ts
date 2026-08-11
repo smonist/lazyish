@@ -12,25 +12,24 @@ export function setupAutoSizes(elements: Element[]): AutoSizesController {
     return { observe: () => {}, disconnect: () => {} };
   }
 
-  const autoSizeEls = new Set<Element>();
-  const parents = new Set<Element>();
+  const autoSizeEls = new WeakSet<Element>();
 
   const updateSize = (el: Element): void => {
-    const parent = el.parentElement;
-    if (!parent) return;
-    const width = parent.getBoundingClientRect().width;
-    el.setAttribute('sizes', `${Math.round(width)}px`);
+    const width =
+      el.getBoundingClientRect().width ||
+      el.parentElement?.getBoundingClientRect().width ||
+      0;
+    if (width > 0) {
+      el.setAttribute('sizes', `${Math.round(width)}px`);
+    }
   };
 
   const ro = new ResizeObserver((entries) => {
     for (const entry of entries) {
-      const parent = entry.target;
-      // Find all lazy elements that are children of this parent
-      for (const el of autoSizeEls) {
-        if (el.parentElement === parent) {
-          const width = Math.round(entry.contentRect.width);
-          el.setAttribute('sizes', `${width}px`);
-        }
+      if (entry.contentRect.width > 0) {
+        entry.target.setAttribute('sizes', `${Math.round(entry.contentRect.width)}px`);
+      } else {
+        updateSize(entry.target);
       }
     }
   });
@@ -40,12 +39,7 @@ export function setupAutoSizes(elements: Element[]): AutoSizesController {
 
     autoSizeEls.add(el);
     updateSize(el);
-
-    const parent = el.parentElement;
-    if (parent && !parents.has(parent)) {
-      parents.add(parent);
-      ro.observe(parent);
-    }
+    ro.observe(el);
   };
 
   for (const el of elements) {
