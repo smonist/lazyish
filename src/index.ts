@@ -27,10 +27,6 @@ export function lazyish(userOptions: Partial<LazyishOptions> = {}): LazyishInsta
       for (const el of els) {
         core.observe(el);
       }
-      if (options.autoSizes) {
-        // autoSizes is handled per-scan in core.update(); for new elements
-        // we rely on core.observe which uses cached ResizeObserver setup
-      }
     });
     mutationObserver.enable();
   }

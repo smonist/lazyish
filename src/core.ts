@@ -153,7 +153,7 @@ export interface CoreController {
  */
 export function createCore(options: LazyishOptions): CoreController {
   const processed = new WeakSet<Element>();
-  let cleanupAutoSizes: (() => void) | null = null;
+  const autoSizes = options.autoSizes ? setupAutoSizes([]) : null;
 
   const io = new IntersectionObserver(
     (entries) => {
@@ -174,6 +174,7 @@ export function createCore(options: LazyishOptions): CoreController {
   function processElement(el: Element): void {
     if (processed.has(el)) return;
     processed.add(el);
+    autoSizes?.observe(el);
 
     if (isObserverMode(el)) {
       io.observe(el);
@@ -188,10 +189,6 @@ export function createCore(options: LazyishOptions): CoreController {
     const elements = Array.from(document.querySelectorAll(options.selector));
     for (const el of elements) {
       processElement(el);
-    }
-    if (options.autoSizes) {
-      if (cleanupAutoSizes) cleanupAutoSizes();
-      cleanupAutoSizes = setupAutoSizes(elements);
     }
   }
 
@@ -216,10 +213,7 @@ export function createCore(options: LazyishOptions): CoreController {
     },
     destroy(): void {
       io.disconnect();
-      if (cleanupAutoSizes) {
-        cleanupAutoSizes();
-        cleanupAutoSizes = null;
-      }
+      autoSizes?.disconnect();
     },
   };
 }

@@ -108,7 +108,7 @@ describe('setupAutoSizes', () => {
     document.body.removeChild(parent);
   });
 
-  it('returns a cleanup function that disconnects the observer', () => {
+  it('disconnects the observer', () => {
     const parent = document.createElement('div');
     const img = document.createElement('img');
     img.setAttribute('data-sizes', 'auto');
@@ -127,8 +127,8 @@ describe('setupAutoSizes', () => {
       toJSON: () => ({}),
     });
 
-    const cleanup = setupAutoSizes([img]);
-    cleanup();
+    const controller = setupAutoSizes([img]);
+    controller.disconnect();
 
     expect(mockDisconnect).toHaveBeenCalled();
 
@@ -142,5 +142,33 @@ describe('setupAutoSizes', () => {
     setupAutoSizes([img]);
 
     expect(mockObserve).not.toHaveBeenCalled();
+  });
+
+  it('registers elements added after setup', () => {
+    const parent = document.createElement('div');
+    const img = document.createElement('img');
+    img.setAttribute('data-sizes', 'auto');
+    parent.appendChild(img);
+    document.body.appendChild(parent);
+
+    vi.spyOn(parent, 'getBoundingClientRect').mockReturnValue({
+      width: 600,
+      height: 0,
+      top: 0,
+      left: 0,
+      bottom: 0,
+      right: 0,
+      x: 0,
+      y: 0,
+      toJSON: () => ({}),
+    });
+
+    const controller = setupAutoSizes([]);
+    controller.observe(img);
+
+    expect(img.getAttribute('sizes')).toBe('600px');
+    expect(mockObserve).toHaveBeenCalledWith(parent);
+
+    document.body.removeChild(parent);
   });
 });

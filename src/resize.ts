@@ -1,19 +1,19 @@
 /**
  * Set up ResizeObserver for elements with data-sizes="auto".
- * Returns a cleanup function.
+ * Returns a controller that accepts elements incrementally.
  */
-export function setupAutoSizes(elements: Element[]): () => void {
+export interface AutoSizesController {
+  observe(el: Element): void;
+  disconnect(): void;
+}
+
+export function setupAutoSizes(elements: Element[]): AutoSizesController {
   if (typeof ResizeObserver === 'undefined') {
-    return () => {};
+    return { observe: () => {}, disconnect: () => {} };
   }
 
-  const autoSizeEls: Element[] = elements.filter(
-    (el) => el.getAttribute('data-sizes') === 'auto',
-  );
-
-  if (autoSizeEls.length === 0) {
-    return () => {};
-  }
+  const autoSizeEls = new Set<Element>();
+  const parents = new Set<Element>();
 
   const updateSize = (el: Element): void => {
     const parent = el.parentElement;
@@ -35,19 +35,27 @@ export function setupAutoSizes(elements: Element[]): () => void {
     }
   });
 
-  const parents = new Set<Element>();
-  for (const el of autoSizeEls) {
-    // Set initial size
+  const observe = (el: Element): void => {
+    if (el.getAttribute('data-sizes') !== 'auto' || autoSizeEls.has(el)) return;
+
+    autoSizeEls.add(el);
     updateSize(el);
-    // Observe parent
+
     const parent = el.parentElement;
     if (parent && !parents.has(parent)) {
       parents.add(parent);
       ro.observe(parent);
     }
+  };
+
+  for (const el of elements) {
+    observe(el);
   }
 
-  return () => {
-    ro.disconnect();
+  return {
+    observe,
+    disconnect(): void {
+      ro.disconnect();
+    },
   };
 }

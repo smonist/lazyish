@@ -99,8 +99,20 @@ describe('lazyish integration', () => {
     const img = document.createElement('img');
     img.className = 'lazyload';
     img.setAttribute('data-src', 'dynamic.jpg');
+    img.setAttribute('data-sizes', 'auto');
 
     const container = document.getElementById('container')!;
+    vi.spyOn(container, 'getBoundingClientRect').mockReturnValue({
+      width: 640,
+      height: 0,
+      top: 0,
+      left: 0,
+      bottom: 0,
+      right: 0,
+      x: 0,
+      y: 0,
+      toJSON: () => ({}),
+    });
     container.appendChild(img);
 
     // Simulate mutation
@@ -118,6 +130,7 @@ describe('lazyish integration', () => {
     mutationCallback(mutations, {} as MutationObserver);
 
     expect(mockIOObserve).toHaveBeenCalledWith(img);
+    expect(img.getAttribute('sizes')).toBe('640px');
   });
 
   it('custom options are used', () => {
